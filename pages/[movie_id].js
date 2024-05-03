@@ -15,7 +15,7 @@ function MovieId() {
     const { query, push } = useRouter();
     const [gen, setGen] = useState();
     const queryTan = useQuery({ queryKey: ['genre'], queryFn: getGenres })
-    const queryTanMov = useQuery({ queryKey: ['movies'], queryFn: () => getMovieByGenre(gen) })
+    const queryTanMov = useQuery({ queryKey: ['movies', gen], queryFn: () => getMovieByGenre(gen) })
 
     function handleMovies(path) {
         push(`/${path}`)
@@ -23,10 +23,6 @@ function MovieId() {
         console.log(gen, "gen");
     }
 
-    // console.log(query.movie_id, "werty");
-
-    // console.log(queryTan.data.data, "queryTan");
-    // console.log(queryTan.data.data.genres[0].name, "CatequeryTan");
     console.log(queryTan, "genre");
 
     return (
