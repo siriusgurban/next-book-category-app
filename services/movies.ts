@@ -10,7 +10,7 @@ export const getMovies = async () => {
 export const getMovieByGenre = async (janr) => {
   const response = await instanceAxios({
     method: 'GET',
-    url: `discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&without_genres=${janr}&api_key=83c38445714fc8a04070abef1b19e665`,
+    url: `discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${janr}&api_key=83c38445714fc8a04070abef1b19e665`,
   })
 
   return response

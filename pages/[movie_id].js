@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import {
     useQuery,
     useMutation,
@@ -12,30 +12,47 @@ import { getGenres, getMovieByGenre, getMovies } from '@/services/movies';
 
 
 function MovieId() {
-    const { query } = useRouter();
+    const { query, push } = useRouter();
+    const [gen, setGen] = useState();
     const queryTan = useQuery({ queryKey: ['genre'], queryFn: getGenres })
-    const queryTanMov = useQuery({ queryKey: ['movies'], queryFn: (janr) => getMovieByGenre(janr) })
+    const queryTanMov = useQuery({ queryKey: ['movies'], queryFn: () => getMovieByGenre(gen) })
 
-    // function handleMovies() {
+    function handleMovies(path) {
+        push(`/${path}`)
+        setGen(() => queryTan?.data?.data?.genres?.find(item => item?.name == query?.movie_id)?.id?.toString())
+        console.log(gen, "gen");
+    }
 
-    //     getMovieByGenre(janr);
-    // }
+    // console.log(query.movie_id, "werty");
 
     // console.log(queryTan.data.data, "queryTan");
     // console.log(queryTan.data.data.genres[0].name, "CatequeryTan");
     console.log(queryTan, "genre");
-    console.log(queryTanMov, "Movies");
+
     return (
         <>
             <div>MovieId</div>
             <ul>
                 {queryTan?.data?.data?.genres?.map((item, index) => {
                     return (
-                        <li key={index}><button onClick={() => getMovieByGenre(item?.name)}>{item?.name}</button></li>
+                        <li key={index}><button onClick={() => handleMovies(item?.name)}>{item?.name}</button></li>
                     )
                 })}
 
-            </ul>
+            </ul >
+            <div>
+                {/* original_title */}
+                <div>
+                    {queryTanMov?.data?.data?.results?.map((item, index) => {
+                        return (<div key={index} className='border border-white'>
+                            <h4>{item?.original_title}</h4>
+                            <p>{item?.overview}</p>
+                        </div>)
+                    })}
+                </div>
+                <h2>{console.log(queryTanMov?.data?.data?.results, "Movies")}</h2>
+                {console.log(gen, "gen")}
+            </div>
         </>
 
     )
